@@ -1,0 +1,9 @@
+#!/bin/bash
+#AP
+user=root # logging into each host as root user
+password=$(cat ansible_node_password.txt) # reading password from 1b
+opensslPw=$(openssl passwd -1 $password)
+commands="useradd -p '$opensslPw' ansible; usermod -aG wheel ansible"
+for host in $(cat ansible_hosts.txt); do
+ ssh -l $user $host $commands
+done
