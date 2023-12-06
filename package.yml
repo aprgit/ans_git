@@ -1,0 +1,28 @@
+---
+- name: web server
+  hosts: web
+  remote_user: ansibleusr
+  become: yes
+  vars_files: vars/packages2
+
+  tasks:
+  - name: Check os is EL8
+    assert:
+      that:
+      - ansible_facts['os_family'] == "RedHat"
+      - ansible_facts['distribution_major_version'] == "8.8" 
+      fail_msg: Host {{ ansible_hostname }} does not meet minimal reqs
+  - name: install packages
+    package:
+      name: "{{ packages | selectattr('state', 'equalto', item) | map(attribute='name') }}"
+      state: "{{ item }}"
+    loop:
+    - absent
+    - present
+
+#  - name: start and enable services
+#    service:
+#      name: "{{ item.name }}"
+#      state: "{{ item.state }}"
+#      enabled: "{{ item.enabled }}"
+#    loop: "{{ services }}"
