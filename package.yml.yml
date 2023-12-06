@@ -1,6 +1,6 @@
 ---
-- name: web server
-  hosts: web
+- name: moh
+  hosts: localhost
   remote_user: ansibleusr
   become: yes
   vars_files: vars/screen-4.6.2-12.el8.x86_64.rpm
