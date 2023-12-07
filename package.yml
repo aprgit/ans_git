@@ -17,7 +17,7 @@
       state: "{{ item }}"
     loop:
     - absent
-    - present
+
 
 #  - name: start and enable services
 #    service:
