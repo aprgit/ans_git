@@ -1,3 +1,6 @@
 ansible-core requires a minimum of Python2 version 2.7 or Python3 version 3.5. Current version: 2.6.6 (r266:84292, Aug  9 2016, 06:11:56) [GCC 4.4.7 20120313 (Red Hat 4.4.7-17)]
 Platform linux on host 10.110.189.31 is using the discovered Python interpreter at /usr/bin/python, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-core/2.15/reference_appendices/interpreter_discovery.html for more information.
 solutions/7007161
+the-bullhorn@redhat.com
+https://docs.ansible.com/ansible/latest/community/communication.html#ansible-automation-platform-support-questions
+https://docs.ansible.com/ansible/latest/community/communication.html
