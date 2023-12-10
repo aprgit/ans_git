@@ -4,3 +4,4 @@ solutions/7007161
 the-bullhorn@redhat.com
 https://docs.ansible.com/ansible/latest/community/communication.html#ansible-automation-platform-support-questions
 https://docs.ansible.com/ansible/latest/community/communication.html
+"ansible_python_interpreter": "/usr/bin/python3.6"
