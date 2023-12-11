@@ -1,0 +1,38 @@
+---
+- name: install packages
+  hosts: all
+#  remote_user: ansibleusr
+#  become: yes
+#  vars_files: ./screen-4.6.2-12.el8.x86_64.rpm
+
+  tasks:
+  - copy:
+      src: ./screen-4.6.2-12.el8.x86_64.rpm
+      dest: /tmp/screen-4.6.2-12.el8.x86_64.rpm
+#    when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == 8.8)
+  - name: install packages
+      shell: "rpm -ivh /tmp/screen-4.6.2-12.el8.x86_64.rpm"
+#      async: 1800
+#      poll: 0
+#      become_method: sudo
+#      become: yes
+#      become_user: root
+#    rpm:
+#      name: /tmp/screen-4.6.2-12.el8.x86_64.rpm
+#      state: present
+#    with_items: "{{ packages }}"
+#    when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == 8.8)
+#     when: ansible_distribution_major_version is defined '8.8'
+
+#  - name: start and enable services
+ #   service:
+  #    name: "{{ item.name }}"
+   #   state: "{{ item.state }}"
+   #   enabled: "{{ item.enabled }}"
+  #  loop: "{{ services }}"
+
+  - name: check os
+    debug:
+      msg: Host {{ ansible_hostname }} does not meet minimal reqs
+    when: (ansible_facts['os_family'] != "RedHat" and ansible_facts['distribution_major_version'] != 8.8)
+#      when: ansible_distribution.RedHat is not defined
