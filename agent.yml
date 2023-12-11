@@ -1,0 +1,26 @@
+---
+- name: agent installation
+  hosts: all
+  remote_user: ansibleusr
+
+  tasks:
+  - name: Check os is EL7
+    assert:
+      that:
+      - ansible_facts['os_family'] == "RedHat"
+      - ansible_facts['distribution_major_version'] == "7"
+      fail_msg: Host {{ ansible_hostname }} does not meet minimal reqs
+  - name: copy shell file
+    copy:
+      src: ./LinuxAgentPackages.MOH_Default_location.sh
+      dest: /tmp/LinuxAgentPackages.MOH_Default_location.sh
+      mode: 0755
+    when: ansible_facts['distribution_major_version'] == "7"
+  - name: execute the shell
+    shell: sh /tmp/LinuxAgentPackages.MOH_Default_location.sh
+    when: ansible_facts['distribution_major_version'] == "7"
+  - name: remove shell script
+    file:
+      path: /tmp/LinuxAgentPackages.MOH_Default_location.sh
+      state: absent
+    when: ansible_facts['distribution_major_version'] == "7"
