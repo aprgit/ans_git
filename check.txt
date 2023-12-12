@@ -5,3 +5,5 @@ the-bullhorn@redhat.com
 https://docs.ansible.com/ansible/latest/community/communication.html#ansible-automation-platform-support-questions
 https://docs.ansible.com/ansible/latest/community/communication.html
 "ansible_python_interpreter": "/usr/bin/python3.6"
+
+skipping: [10.110.190.32] => {"changed": false, "cmd": "sh /tmp/LinuxAgentPackages.MOH_Default_location.sh", "delta": null, "end": null, "msg": "Command would have run if not in check mode", "rc": 0, "start": null, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
