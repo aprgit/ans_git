@@ -1,0 +1,23 @@
+---
+- name: Playbook - Banner set
+  hosts: all
+  become: true
+  tasks:
+    - name: Change the issu banner on sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: 'Banner'
+        line: 'Banner /etc/issue'
+      notify: sshd_restart
+
+    - name: Banner content template copy
+      template:
+        src: banner-tmpl.j2
+        dest: /etc/issue
+      notify: sshd_restart
+
+  handlers:
+    - name: sshd_restart
+      service:
+        name: sshd
+        state: restarted
