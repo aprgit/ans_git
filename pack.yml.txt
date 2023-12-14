@@ -1,0 +1,27 @@
+---
+- name: install packages
+  hosts: web
+  remote_user: ansibleuser
+  become: yes
+  vars_files: vars/packages2
+
+  tasks:
+  - name: install packages
+    yum:
+      name: "{{ item.name }}"
+      state: "{{ item.state }}"
+    with_items: "{{ packages }}"
+    when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == 8)
+
+  - name: start and enable services
+    service:
+      name: "{{ item.name }}"
+      state: "{{ item.state }}"
+      enabled: "{{ item.enabled }}"
+    loop: "{{ services }}"
+
+  - name: check os
+    debug:
+      msg: >
+        Host {{ ansible_hostname }} does not meet minimal reqs
+      when: ansible_distribution.RedHat is not defined

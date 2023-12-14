@@ -1,0 +1,35 @@
+---
+- name: named config
+  hosts: all
+  tasks:
+  - name: Check if the file contains the entry
+    shell: cat /root/shell | grep "ansible entry"
+    become: yes
+    become_method: sudo
+    failed_when: false
+    register: grep_result   
+  - name: 
+    lineinfile:
+    dest: /root/shell
+    insertbefore: "include '/usr/local/samba/bind-dns/named.conf';"
+    line: "\t\tzone 'mol.gov.om.' IN {\n\t\tforward only;\n\t\ttype forward;\n\t\tforwarders {10.99.7.11; 10.99.7.13; };\n};\n"
+    state: present
+    backup: yes
+
+line: "\t\tzone 'mol.gov.om.' IN {\n\t\tforward only;\n\t\ttype forward;\n\t\tforwarders {10.99.7.11; 10.99.7.13; };\n};\n"
+line: "\t\t\t\t\t\t\tzone 'mol.gov.om.' IN {\n\t\t\tforward only;\n\t\t\ttype forward;\n\t\t}\n"
+    
+    zone "mol.gov.om." IN {
+    forward only;
+    type forward;
+    forwarders {10.99.7.11; 10.99.7.13; };
+
+};
+
+
+ - name: Check if the file contains the entry
+   shell: cat /destinationPATH/file.xpto | grep "ansible entry"
+   become: yes
+   become_method: sudo
+   failed_when: false
+   register: grep_result

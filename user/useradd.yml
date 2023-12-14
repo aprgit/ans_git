@@ -1,0 +1,34 @@
+---
+- name: useradd playbook
+  hosts: all
+  become: true
+  vars:
+    new_password: 
+    root_password_salt: "{{ vault_root_password_salt }}"
+  tasks:
+    - name: Ensure the user does not exist
+      user:
+        name: ansible
+        state: absent
+    - user:
+        name: ansibleusr
+        shell: /bin/bash
+        groups: wheel
+        password: "{{ new_password | password_hash('sha512') }}"
+        state: present
+        append: yes
+#    - name: Ensure the user has a home directory
+#      file:
+#        path: "/home/ansible"
+#        state: directory
+#        owner: "ansibleusr"
+#        group: "ansible"
+#        mode: '0755'
+    - name: Add user to sudoers with NOPASSWD
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^ansibleusr\s+ALL='
+        line: "ansible ALL=(ALL) ALL"
+        validate: 'visudo -cf %s'
+      become: yes
