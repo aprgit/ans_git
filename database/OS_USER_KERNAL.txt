@@ -1,0 +1,91 @@
+OS user creation:
+====================
+root:
+
+1- groupadd -g 400 dba
+2- useradd -g 400 -u 400 -d /home/oracle oracle
+3- passwd oracle
+edit /home/oracle/.bash_profile
+edit /etc/sysctl.conf
+edit /etc/security/limits.conf
+
+==============================================
+
+
+4- vi /home/oracle/.bash_profile
+--------------------------
+
+
+# PATH=$PATH:$HOME/bin
+# export PATH
+# unset USERNAME
+
+ORACLE_BASE=/oracle
+ORACLE_OWNER=oracle
+ORACLE_HOME=/oracle/product/12.1.0/db_1
+ORACLE_SID=as3phc
+ORACLE_TERM=xterm
+PATH=$PATH:$ORACLE_HOME/bin:$ORACLE_HOME/Opatch
+LD_ASSUME_KERNEL=3.10.0
+THREADS_FLAG=native
+LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib:usr/local/lib
+NLS_LANG='AMERICAN_AMERICA.WE8ISO8859P1'
+ORA_NLS33=$ORACLE_HOME/ocommon/nls/admin/data
+TNS_ADMIN=$ORACLE_HOME/network/admin
+
+export ORACLE_BASE
+export ORACLE_OWNER
+export ORACLE_HOME
+export ORACLE_SID
+export ORACLE_TERM
+export PATH
+export LD_ASSUME_KERNEL
+export THREADS_FLAG
+export LD_LIBRARY_PATH
+export NLS_LANG
+export ORA_LNS33
+export TNS_ADMIN
+
+umask 022
+
+==============================================
+
+5- vi /etc/sysctl.conf 
+
+
+kernel.shmall = 4294967296
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default = 4194304
+net.core.rmem_max = 4194304
+net.core.wmem_default = 262144
+net.core.wmem_max = 1048576
+fs.file-max = 6815744
+fs.aio-max-nr = 6815744
+
+==============================================
+
+6- vi /etc/security/limits.conf
+
+
+oracle          soft    nofile  131072
+oracle          hard    nofile  131072
+oracle          soft    nproc   131072
+oracle          hard    nproc   131072
+oracle          soft    core    unlimited
+oracle          hard    core    unlimited
+oracle          soft    memlock 50000000
+oracle          hard    memlock 50000000
+
+=============================================
+
+7- sysctl -p
+
+
+============================================
+
+8- Give permission for oracle user
+
+chown oracle.dba /oracle -R
+chown oracle.dba /database -R
