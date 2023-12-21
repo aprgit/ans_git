@@ -3,16 +3,16 @@
   hosts: all
   tasks:
   - name: Check if the file contains the entry
-    shell: cat /root/shell | grep "mol.gov.om."
+    shell: cat /etc/named.conf | grep "mol.gov.om."
     become: yes
     become_method: sudo
     failed_when: false
-    register: grep_result   
-  - name: 
+    register: grep_result
+  - name:
     lineinfile:
-    dest: /root/shell
-    insertbefore: "include '/usr/local/samba/bind-dns/named.conf';"
-    line: "\t\tzone 'mol.gov.om.' IN {\n\t\tforward only;\n\t\ttype forward;\n\t\tforwarders {10.99.7.11; 10.99.7.13; };\n};\n"
-    state: present
-    backup: yes
-
+      dest: /etc/named.conf
+      insertafter: "};"
+      line: "\nzone 'mol.gov.om.' IN {\n\tforward only;\n\ttype forward;\n\tforwarders {10.99.7.11; 10.99.7.13; };\n};\n"
+      state: present
+      backup: yes
+    when: grep_result.rc > 0
