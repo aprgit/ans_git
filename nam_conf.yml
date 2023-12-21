@@ -1,0 +1,24 @@
+---
+##AP##
+- name: named config
+  hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: Check if the file contains the entry
+    shell: cat /root/named.txt | grep "mol.gov.om."
+    failed_when: false
+    register: grep_result
+  - name:
+    blockinfile:
+      path: /root/named.txt
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      insertafter: "};"
+      block: |
+        zone "mol.gov.om." IN {
+                forward only;
+                type forward;
+                forwarders {10.99.7.11; 10.99.7.13; };
+        };
+      backup: yes
+    when: grep_result.rc > 0

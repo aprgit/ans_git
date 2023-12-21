@@ -1,0 +1,44 @@
+---
+- name: named config
+  hosts: all
+  become: yes
+  become_method: sudo
+    #  vars:
+    #    list: \nzone "mol.gov.om." IN {\n\tforward only;\n\ttype forward;\n\tforwarders {10.99.7.11; 10.99.7.13; };\n};\n
+    #    vars:
+    #      - line1: 'zone "mol.gov.om." IN {'
+    #  - line2: 'forward only;'
+    #  - line3: 'type forward;'
+    #  - line4: 'forwarders {10.99.7.11; 10.99.7.13; };'
+    #  - line5: '};'
+  tasks:
+#  - name: copy file
+#    copy:
+#      src: named.txt
+#      dest: /root/named.txt
+  - name: Check if the file contains the entry
+    shell: cat /root/named.txt | grep "mol.gov.om."
+    failed_when: false
+    register: grep_result
+  - name:
+    blockinfile:
+      path: /root/named.txt
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      insertafter: "};"
+      block: |
+        zone "mol.gov.om." IN {
+                forward only;
+                type forward;
+                forwarders {10.99.7.11; 10.99.7.13; };
+        };
+      backup: yes
+    when: grep_result.rc > 0
+    #    lineinfile:
+    #      dest: /root/named.txt
+    #      insertafter: "};"
+#      line: "\nzone 'mol.gov.om.' IN {\n\tforward only;\n\ttype forward;\n\tforwarders {10.99.7.11; 10.99.7.13; };\n};\n"
+#      line: "{{ line1 }}\n\t{{ line2 }}\n\t{{ line3 }}\n\t{{ line4 }}\n{{ line5 }}\n"
+#      line: '{{ "list" }}'
+#      state: present
+#      backup: yes
+#    when: grep_result.rc > 0
