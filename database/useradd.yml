@@ -6,20 +6,20 @@
 # Creates the in vars/main.yml defined oracle group if not existing.
 # TAG: rdbms, prepare
 # ####################################################################
+  tasks:
+    - name: Check if dba Group exsists
+      become: true
+      getent:
+        database: group
+        key: "{{ oracle_group }}"
+      fail_key: false
+    register: group_exists
+#  tags:
+#    - rdbms
+#    - prepare
+#    - client
 
-- name: Check if dba Group exsists
-  become: true
-  getent:
-    database: group
-    key: "{{ oracle_group }}"
-    fail_key: false
-  register: group_exists
-  tags:
-    - rdbms
-    - prepare
-    - client
-
-- name: Create dba Group
+  - name: Create dba Group
   group:
     name: "{{ oracle_group }}"
     gid: "{{ oracle_gid }}"
