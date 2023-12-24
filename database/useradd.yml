@@ -20,11 +20,11 @@
 #    - client
 
   - name: Create dba Group
-  group:
-    name: "{{ oracle_group }}"
-    gid: "{{ oracle_gid }}"
-    state: present
-  become: true
+    group:
+      name: "{{ oracle_group }}"
+      gid: "{{ oracle_gid }}"
+      state: present
+    become: true
   when: group_exists.msg is defined
 #  tags:
 #    - rdbms
@@ -38,39 +38,39 @@
 # TAG: rdbms, prepare, client
 # ####################################################################
 
-- name: Check if {{ oracle_user }} User exsists
-  become: true
-  getent:
-    database: passwd
-    key: "{{ oracle_user }}"
+  - name: Check if {{ oracle_user }} User exsists
+    become: true
+    getent:
+      database: passwd
+      key: "{{ oracle_user }}"
     fail_key: false
-  register: user_exists
+    register: user_exists
 #  tags:
 #    - rdbms
 #    - prepare
 #    - client
 
-- name: Create oracle User
-  user:
-    name: "{{ oracle_user }}"
-    shell: /bin/bash
-    home: "{{ oracle_home_dir }}"
-    uid: "{{ oracle_uid }}"
-    group: "{{ oracle_group }}"
-    password: "{{ oracle_user_password | password_hash('sha512') }}"
-    update_password: on_create
-  register: user_created
-  become: true
-  when: user_exists.msg is defined
+  - name: Create oracle User
+    user:
+      name: "{{ oracle_user }}"
+      shell: /bin/bash
+      home: "{{ oracle_home_dir }}"
+      uid: "{{ oracle_uid }}"
+      group: "{{ oracle_group }}"
+      password: "{{ oracle_user_password | password_hash('sha512') }}"
+      update_password: on_create
+    register: user_created
+    become: true
+    when: user_exists.msg is defined
 #  tags:
 #    - rdbms
 #    - prepare
 #    - client
 
-- name: New oracle User Password  # noqa no-handler
-  debug:
-    msg: "User {{ oracle_user }} has been created with password {{ oracle_user_password }}"
-  when: user_created.changed
+  - name: New oracle User Password  # noqa no-handler
+    debug:
+      msg: "User {{ oracle_user }} has been created with password {{ oracle_user_password }}"
+    when: user_created.changed
 #  tags:
 #    - rdbms
 #    - prepare
