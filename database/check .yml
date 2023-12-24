@@ -12,7 +12,7 @@
         msg: "{{ os_name.stdout }}"
     - name: Check the kernal version
       shell: |
-         uname -r | cut -c -7
+        uname -r | cut -c -7
       register: kernal_ver
       ignore_errors: yes
     - debug:
