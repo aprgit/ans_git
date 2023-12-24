@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: sysctl make it permanent
+      shell: |
+        sysctl -p
+      register: sys_pem
+      ignore_errors: yes
+    - debug:
+        msg: "{{ sys_pem.stdout }}"
