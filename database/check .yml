@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Check if oracle linux is installed
+      shell: |
+        cat: /etc/system-release
+      register: os_name
+      ignore_errors: yes
+    - debug:
+      msg: "{{os_name.stdout}}"```
+    - name: Check the kernal version
+      shell: |
+         uname -r | cut -c -7
+      register: kernal_ver
+      ignore_errors: yes
+    - debug:
+      msg: "{{kernal_ver.stdout}}"```
