@@ -4,7 +4,7 @@
   remote_user: ansibleusr
 
   tasks:
-  - name: Check os is EL7
+  - name: Check os is RHEL7
     assert:
       that:
       - ansible_facts['os_family'] == "RedHat"

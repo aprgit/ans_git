@@ -1,0 +1,79 @@
+---
+- name: prerequiste Database
+  hosts: all
+  become: true
+# ####################################################################
+# Creates the in vars/main.yml defined oracle group if not existing.
+# TAG: rdbms, prepare
+# ####################################################################
+
+- name: Check if dba Group exsists
+  become: true
+  getent:
+    database: group
+    key: "{{ oracle_group }}"
+    fail_key: false
+  register: group_exists
+  tags:
+    - rdbms
+    - prepare
+    - client
+
+- name: Create dba Group
+  group:
+    name: "{{ oracle_group }}"
+    gid: "{{ oracle_gid }}"
+    state: present
+  become: true
+  when: group_exists.msg is defined
+#  tags:
+#    - rdbms
+#    - prepare
+#    - client
+
+# ####################################################################
+# Creates the in vars/main.yml defined oracle user if not existing.
+# Sets User password and shows a message if the password has been set.
+# The password is only set when the user is not existent.
+# TAG: rdbms, prepare, client
+# ####################################################################
+
+- name: Check if {{ oracle_user }} User exsists
+  become: true
+  getent:
+    database: passwd
+    key: "{{ oracle_user }}"
+    fail_key: false
+  register: user_exists
+#  tags:
+#    - rdbms
+#    - prepare
+#    - client
+
+- name: Create oracle User
+  user:
+    name: "{{ oracle_user }}"
+    shell: /bin/bash
+    home: "{{ oracle_home_dir }}"
+    uid: "{{ oracle_uid }}"
+    group: "{{ oracle_group }}"
+    password: "{{ oracle_user_password | password_hash('sha512') }}"
+    update_password: on_create
+  register: user_created
+  become: true
+  when: user_exists.msg is defined
+#  tags:
+#    - rdbms
+#    - prepare
+#    - client
+
+- name: New oracle User Password  # noqa no-handler
+  debug:
+    msg: "User {{ oracle_user }} has been created with password {{ oracle_user_password }}"
+  when: user_created.changed
+#  tags:
+#    - rdbms
+#    - prepare
+#    - client
+
+

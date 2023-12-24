@@ -3,7 +3,6 @@
   hosts: all
   become: true
   vars:
-    new_password: 
     root_password_salt: "{{ vault_root_password_salt }}"
   tasks:
     - name: Ensure the user does not exist
@@ -29,6 +28,6 @@
         dest: /etc/sudoers
         state: present
         regexp: '^ansibleusr\s+ALL='
-        line: "ansible ALL=(ALL) ALL"
+        line: "ansibleusr ALL=(ALL) ALL"
         validate: 'visudo -cf %s'
       become: yes

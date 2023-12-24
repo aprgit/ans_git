@@ -1,0 +1,26 @@
+---
+##AP##
+- name: limits_configuration 
+  hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: Check if the file contains the entry
+    shell: cat /etc/security/limits.conf | grep "oracle          soft    nofile  131072"
+    failed_when: false
+    register: grep_result
+  - name: Editing limits.conf
+    blockinfile:
+      path: /etc/security/limits.conf
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      block: |
+        oracle          soft    nofile  131072
+        oracle          hard    nofile  131072
+        oracle          soft    nproc   131072
+        oracle          hard    nproc   131072
+        oracle          soft    core    unlimited
+        oracle          hard    core    unlimited
+        oracle          soft    memlock 50000000
+        oracle          hard    memlock 50000000
+      backup: yes
+    when: grep_result.rc > 0

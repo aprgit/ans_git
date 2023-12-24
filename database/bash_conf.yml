@@ -1,0 +1,49 @@
+---
+##AP##
+- name: bash_profile 
+  hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: Check if the file contains the entry
+    shell: cat /home/oracle/.bash_profile | grep "ORACLE_BASE=/oracle"
+    failed_when: false
+    register: grep_result
+  - name: Editing bash profile
+    blockinfile:
+      path: /home/oracle/.bash_profile
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      block: |
+        # PATH=$PATH:$HOME/bin
+        # export PATH
+        # unset USERNAME
+
+        ORACLE_BASE=/oracle
+        ORACLE_OWNER=oracle
+        ORACLE_HOME=/oracle/product/{{ pro_ver }}/db_1
+        ORACLE_SID={{ orc_sid }}
+        ORACLE_TERM=xterm
+        PATH=$PATH:$ORACLE_HOME/bin:$ORACLE_HOME/Opatch
+        LD_ASSUME_KERNEL= {{ kernal_ver }}
+        THREADS_FLAG=native
+        LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib:usr/local/lib
+        NLS_LANG='AMERICAN_AMERICA.WE8ISO8859P1'
+        ORA_NLS33=$ORACLE_HOME/ocommon/nls/admin/data
+        TNS_ADMIN=$ORACLE_HOME/network/admin
+
+        export ORACLE_BASE
+        export ORACLE_OWNER
+        export ORACLE_HOME
+        export ORACLE_SID
+        export ORACLE_TERM
+        export PATH
+        export LD_ASSUME_KERNEL
+        export THREADS_FLAG
+        export LD_LIBRARY_PATH
+        export NLS_LANG
+        export ORA_LNS33
+        export TNS_ADMIN
+
+        umask 022
+      backup: yes
+    when: grep_result.rc > 0

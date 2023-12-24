@@ -1,0 +1,24 @@
+---
+##AP##
+- name: Create Oracle Home Directory
+  hosts: all
+  become: yes
+  become_method: sudo
+  vars_files:
+    - dir_list.yml
+  tasks:
+    - name: Create Oracle Home Directory
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ oracle_user }}"
+        group: "{{ oracle_group }}"
+        mode: 0755
+      with_items: "{{ directory }}"
+      register: perm_reg
+    
+    - name: output verify
+      debug:
+        msg: "perm_reg.stdout"
+      when: perm_reg.changed
+      
