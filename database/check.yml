@@ -5,7 +5,7 @@
   tasks:
     - name: Check if oracle linux is installed
       shell: |
-        cat: /etc/system-release
+        cat: /etc/os-release
       register: os_name
       ignore_errors: yes
     - debug:
