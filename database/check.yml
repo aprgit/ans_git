@@ -4,7 +4,8 @@
   gather_facts: true
   tasks:
     - name: Check if oracle linux is installed
-      command:  cat /etc/os-release | grep -E 'ID=|VERSION_ID'
+      shell: |
+        cat /etc/os-release | grep -Ei 'ID=|ID-VERSION'  
       register: os_name
       ignore_errors: yes
     - debug:
