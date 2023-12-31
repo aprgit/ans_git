@@ -4,7 +4,7 @@
   gather_facts: true
   tasks:
     - name: Check if oracle linux is installed
-      shell: |
+      command: |
         cat: /etc/os-release
       register: os_name
       ignore_errors: yes
