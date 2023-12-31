@@ -56,7 +56,7 @@
         shell: /bin/bash
         home: "{{ oracle_home_dir }}"
         uid: "{{ oracle_uid }}"
-        groups: "{{ oracle_group }}"
+        group: "{{ oracle_group }}"
         password: "{{ oracle_user_password | password_hash('sha512') }}"
         update_password: on_create
       register: user_created
