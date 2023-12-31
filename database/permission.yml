@@ -15,7 +15,7 @@
         group: "{{ oracle_group }}"
         mode: 0755
       with_items: "{{ directory }}"
-      register: perm_reggit push  
+      register: perm_reggit 
     
     - name: output verify
       debug:
