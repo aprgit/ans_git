@@ -13,7 +13,7 @@
     - name: Check the kernal version
       shell: |
         uname -r | cut -c -7
-      register: kernal_ver
+      register: kernal_version
       ignore_errors: yes
     - debug:
-        msg: "{{ kernal_ver.stdout }}"
+        msg: "{{ kernal_version.stdout }}"
