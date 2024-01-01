@@ -6,12 +6,12 @@
   become_method: sudo
   tasks:
   - name: Check if the file contains the entry
-    shell: cat /root/named.txt | grep "mol.gov.om."
+    shell: /etc/named.conf | grep "mol.gov.om."
     failed_when: false
     register: grep_result
   - name:
     blockinfile:
-      path: /root/named.txt
+      path: /etc/named.conf
       marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
       insertafter: "};"
       block: |
