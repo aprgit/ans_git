@@ -19,6 +19,6 @@
     
     - name: output verify
       debug:
-        msg: "perm_reg.stdout"
-      when: perm_reg.changed
+        msg: "perm_reggit.stdout"
+      when: perm_reggit.changed
       
