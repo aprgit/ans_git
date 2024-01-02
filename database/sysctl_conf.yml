@@ -31,6 +31,7 @@
       sysctl -p
     register: sys_pem
     ignore_errors: yes
+    when: grep_result.rc > 0
   - debug:
       msg: "{{ sys_pem.stdout }}"
     when: grep_result.rc > 0
