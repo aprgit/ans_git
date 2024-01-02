@@ -29,5 +29,5 @@
   - name: sysctl -p
     sysctl:
       sysctl_set: yes
-      state: present
       reload: yes
+    when: grep_result.rc > 0
