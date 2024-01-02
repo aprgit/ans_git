@@ -27,13 +27,13 @@
       backup: yes
     when: grep_result.rc > 0
   - name: sysctl make it permanent
-      shell: |
-        sysctl -p
-      register: sys_pem
-      ignore_errors: yes
-    - debug:
-        msg: "{{ sys_pem.stdout }}"
-      when: grep_result.rc > 0
+    shell: |
+      sysctl -p
+    register: sys_pem
+    ignore_errors: yes
+  - debug:
+      msg: "{{ sys_pem.stdout }}"
+   when: grep_result.rc > 0
 #  - name: sysctl
 #    sysctl:
 #      sysctl_set: true
