@@ -13,12 +13,11 @@
         state: directory
         owner: "{{ oracle_user }}"
         group: "{{ oracle_group }}"
-        mode: 0755
       with_items: "{{ directory }}"
       register: perm_reggit 
     
     - name: output verify
       debug:
-        msg: "perm_reggit.stdout"
+        msg: "{{ perm_reggit.stdout }}"
       when: perm_reggit.changed
       
