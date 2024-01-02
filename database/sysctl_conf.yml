@@ -26,8 +26,8 @@
         fs.aio-max-nr = 6815744
       backup: yes
     when: grep_result.rc > 0
-  - name: sysctl -p
+  - name: sysctl
     sysctl:
-      sysctl_set: yes
-      reload: yes
+      sysctl_set: true
+      reload: true
     when: grep_result.rc > 0
