@@ -80,7 +80,6 @@
       become: true
       stat:    
         path: /home/database
-        fail_stat: false
       register: dir_exists
     - name: Create database Home Directory
       file:
