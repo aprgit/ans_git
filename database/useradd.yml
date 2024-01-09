@@ -78,14 +78,14 @@
 #    - client
     - name: Create database Home Directory
       file:
-        path: /home/"{{ directory }}"
+        path: /home/database
         state: directory
         owner: "{{ oracle_user }}"
         group: "{{ oracle_group }}"
         recurse: true
-#      register: perm_reggit 
+      register: perm_reggit 
     
-#    - name: output verify
-#      debug:
-#        msg: "{{ perm_reggit.stdout }}"
-#      when: perm_reggit.changed
+    - name: output verify
+      debug:
+        msg: "{{ perm_reggit.stdout }}"
+      when: perm_reggit.changed
