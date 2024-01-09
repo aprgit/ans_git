@@ -5,6 +5,10 @@
   become: yes
   become_method: sudo
   tasks:
+  - name: Check the kernal version
+      shell: |
+        uname -r | cut -c -7
+      register: kernal_version
   - name: Check if the file contains the entry
     shell: cat /home/oracle/.bash_profile | grep "ORACLE_BASE=/oracle"
     failed_when: false
@@ -24,7 +28,7 @@
         ORACLE_SID={{ orc_sid }}
         ORACLE_TERM=xterm
         PATH=$PATH:$ORACLE_HOME/bin:$ORACLE_HOME/Opatch
-        LD_ASSUME_KERNEL= {{ kernal_ver }}
+        LD_ASSUME_KERNEL= {{ kernal_version }}
         THREADS_FLAG=native
         LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib:usr/local/lib
         NLS_LANG='AMERICAN_AMERICA.WE8ISO8859P1'
