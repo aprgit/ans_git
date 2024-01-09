@@ -57,6 +57,7 @@
         home: /home/"{{ oracle_user }}"
         uid: "{{ oracle_uid }}"
         group: "{{ oracle_group }}"
+        recurse: true
         password: "{{ oracle_user_password | password_hash('sha512') }}"
         update_password: on_create
       register: user_created
@@ -81,9 +82,10 @@
         state: directory
         owner: "{{ oracle_user }}"
         group: "{{ oracle_group }}"
-      register: perm_reggit 
+        recurse: true
+#      register: perm_reggit 
     
-    - name: output verify
-      debug:
-        msg: "{{ perm_reggit.stdout }}"
-      when: perm_reggit.changed
+#    - name: output verify
+#      debug:
+#        msg: "{{ perm_reggit.stdout }}"
+#      when: perm_reggit.changed
