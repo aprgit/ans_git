@@ -76,6 +76,12 @@
 #    - rdbms
 #    - prepare
 #    - client
+    - name: Check if database directory exist
+      become: true
+      stat:    
+        path: /home/database
+        fail_stat: false
+      register: dir_exists
     - name: Create database Home Directory
       file:
         path: /home/database
@@ -83,9 +89,10 @@
         owner: "{{ oracle_user }}"
         group: "{{ oracle_group }}"
         recurse: true
-      register: perm_reggit 
+      when: dir_exists.stat.exists 
+#        register: perm_reggit
     
-    - name: output verify
-      debug:
-        msg: "{{ perm_reggit.stdout }}"
-      when: perm_reggit.changed
+#    - name: output verify
+#      debug:
+#        msg: "{{ perm_reggit.stdout }}"
+#      when: perm_reggit.changed
