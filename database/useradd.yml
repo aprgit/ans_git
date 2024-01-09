@@ -54,7 +54,7 @@
       user:
         name: "{{ oracle_user }}"
         shell: /bin/bash
-        home: "{{ oracle_home_dir }}"
+        home: /home/"{{ oracle_user }}"
         uid: "{{ oracle_uid }}"
         group: "{{ oracle_group }}"
         password: "{{ oracle_user_password | password_hash('sha512') }}"
@@ -75,3 +75,15 @@
 #    - rdbms
 #    - prepare
 #    - client
+    - name: Create database Home Directory
+      file:
+        path: /home/"{{ directory }}"
+        state: directory
+        owner: "{{ oracle_user }}"
+        group: "{{ oracle_group }}"
+      register: perm_reggit 
+    
+    - name: output verify
+      debug:
+        msg: "{{ perm_reggit.stdout }}"
+      when: perm_reggit.changed
