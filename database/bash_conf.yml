@@ -6,9 +6,12 @@
   become_method: sudo
   tasks:
   - name: Check the kernal version
-      shell: |
-        uname -r | cut -c -7
-      register: kernal_version
+    shell: |
+      uname -r | cut -c -7
+    register: kernal_version
+    ignore_errors: yes
+  - debug:
+      msg: "{{ kernal_version.stdout }}"
   - name: Check if the file contains the entry
     shell: cat /home/oracle/.bash_profile | grep "ORACLE_BASE=/oracle"
     failed_when: false
